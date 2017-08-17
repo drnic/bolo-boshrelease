@@ -1,0 +1,47 @@
+---
+name: bolo
+
+instance_groups:
+- name: bolo
+  azs: [z1]
+  instances: 1
+  vm_type: default
+  stemcell: default
+  networks: [{name: default}]
+  jobs:
+  - name: bolo
+    release: bolo
+  - name: dbolo
+    release: bolo
+
+- name: ui
+  azs: [z1]
+  instances: 1
+  vm_type: default
+  stemcell: default
+  networks: [{name: default}]
+  jobs:
+  - name: ui
+    release: bolo
+  - name: ffd
+    release: bolo
+  - name: dbolo
+    release: bolo
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 1000-30000
+  update_watch_time: 1000-30000
+  serial: false
+
+stemcells:
+  - alias: default
+    os: ubuntu-trusty
+    version: latest
+
+releases:
+- name: bolo
+  version: 0.3.0
+  url: https://github.com/cloudfoundry-community/bolo-boshrelease/releases/download/v0.3.0/bolo-0.3.0.tgz
+  sha1: 5a1316d711ad6b2093d096e8408b9b8dbda7d606

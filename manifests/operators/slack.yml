@@ -1,0 +1,22 @@
+---
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: slack
+    azs: [z1]
+    instances: 1
+    vm_type: default
+    stemcell: default
+    networks: [{name: default}]
+    jobs:
+    - name: dbolo
+      release: bolo
+    - name: slack
+      release: bolo
+      properties:
+        bolo:
+          slack:
+            webhook: ((bolo-slack-webhook))
+            channel: ((bolo-slack-channel))
+            botname: ((bolo-slack-botname))
+            avatar:  ((bolo-slack-avatar))
